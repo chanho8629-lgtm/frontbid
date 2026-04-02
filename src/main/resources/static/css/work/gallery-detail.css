@@ -16,6 +16,14 @@ body {
 }
 
 /* Base Layout */
+.yt-shell__page-content.gallery-page {
+    position: relative;
+    min-height: calc(100vh - 56px);
+    margin-top: 56px;
+    margin-left: 240px;
+    background: #ffffff;
+}
+
 .gallery-container {
     max-width: 100%;
 }
@@ -31,7 +39,7 @@ ytd-default-promo-panel-renderer {
     display: flex;
     position: relative;
     width: 100%;
-    height: 560px;
+    height: 420px;
     background-color: #000;
     overflow: hidden;
 }
@@ -46,9 +54,9 @@ ytd-default-promo-panel-renderer {
     background-size: cover;
     background-position: center;
     z-index: 1;
-    /* 마스크 적용: 왼쪽(40%)까지는 완전 투명, 오른쪽(75%)부터 완전 불투명 */
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 35%, rgba(0,0,0,0.5) 55%, black 80%);
-    mask-image: linear-gradient(to right, transparent 0%, transparent 35%, rgba(0,0,0,0.5) 55%, black 80%);
+    /* 사진이 더 넓게 보이도록 페이드 구간을 줄임 */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 18%, rgba(0,0,0,0.72) 34%, black 48%);
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 18%, rgba(0,0,0,0.72) 34%, black 48%);
 }
 
 /* 텍스트 가독성을 위한 전체적인 어두운 톤 유지 */
@@ -58,7 +66,7 @@ ytd-default-promo-panel-renderer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.2); /* 사진의 채도를 살짝 낮춰 텍스트 강조 */
+    background: rgba(0, 0, 0, 0.1); /* 사진이 더 잘 보이도록 어둡기 완화 */
     z-index: 2;
 }
 
@@ -82,21 +90,29 @@ ytd-default-promo-panel-renderer {
 }
 
 #description.style-scope {
-    font-size: 14px;
+    display: block;
+    font-size: 15px;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.5);
-    margin-bottom: 12px;
-    display: block;
+    margin: 0 0 12px;
     text-transform: uppercase;
     letter-spacing: 2px;
 }
 
 #hero-title.ytd-default-promo-panel-renderer {
-    font-size: 48px;
+    font-size: 35px;
     font-weight: 800;
     margin: 0 0 32px 0;
     line-height: 1.1;
     letter-spacing: -1px;
+}
+
+.hero-meta {
+    margin: 0 0 24px;
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.72);
+    letter-spacing: -0.01em;
 }
 
 .btn-play-all-main {
@@ -224,7 +240,7 @@ button.selected .progress-bar::after {
 
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 24px;
     margin-top: 24px;
 }
@@ -252,16 +268,56 @@ button.selected .progress-bar::after {
     object-fit: cover;
 }
 
+.item-meta {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 12px;
+    align-items: start;
+    margin-top: 12px;
+}
+
+.item-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #d9d9d9;
+}
+
+.item-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-copy {
+    min-width: 0;
+}
+
 .item-meta h3 {
     font-size: 16px;
     font-weight: 600;
     line-height: 1.4;
-    margin-bottom: 6px;
+    margin: 0 0 2px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
 }
 
 .item-meta p {
+    margin: 0;
+}
+
+.item-channel,
+.item-stats {
     font-size: 14px;
     color: var(--txt-gray);
+    line-height: 1.35;
+}
+
+.item-channel {
+    margin-bottom: 1px;
 }
 
 ytd-rich-shelf-renderer h2, .content-row-section h2 {
@@ -274,10 +330,13 @@ ytd-rich-shelf-renderer h2, .content-row-section h2 {
 @media (max-width: 1024px) {
     #content.ytd-default-promo-panel-renderer { padding: 0 40px; }
     .gallery-nav ul, .gallery-content { padding-left: 40px; padding-right: 40px; }
+    .video-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 @media (max-width: 768px) {
-    ytd-default-promo-panel-renderer { height: 450px; }
+    .yt-shell__page-content.gallery-page { margin-left: 72px; }
+    ytd-default-promo-panel-renderer { height: 320px; }
     #hero { width: 100%; -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 50%); }
     #content.ytd-default-promo-panel-renderer { width: 100%; align-items: center; text-align: center; }
+    .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

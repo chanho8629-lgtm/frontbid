@@ -15,6 +15,7 @@ const workDetails = [
         marketType: "trade",
         avatarText: "@",
         channel: "@지무비",
+        isOwner: true,
         subscribe: "팔로우",
         desc: "예매율 38% 미쳤다..유해진 주연의 <내부자들>이 다시 화제가 되는 이유를 한 번에 보여주는 장면입니다.\n정적인 대사처럼 시작하지만 감정선이 점점 쌓이면서 분위기를 완전히 뒤집고, 배우들 호흡과 표정 변화가 이어질수록 몰입감이 훨씬 커집니다.\n특히 유해진 특유의 현실적인 톤이 장면 전체를 단단하게 잡아줘서 짧게 봐도 기억에 남는 클립입니다.",
         headline: "와.. 연기 개 미쳤다..",
@@ -88,6 +89,7 @@ const workDetails = [
         marketType: "auction",
         avatarText: "A",
         channel: "@artflux",
+        isOwner: false,
         subscribe: "팔로우",
         desc: "설치 미술 전시장 안에서 빛과 사운드가 같이 반응하는 순간",
         headline: "공간 전체가 작품이 되는 연출",
@@ -122,6 +124,7 @@ const workDetails = [
         remixLabel: "",
         avatarText: "S",
         channel: "@studioframe",
+        isOwner: false,
         subscribe: "팔로우",
         desc: "작가가 직접 설명하는 제작 과정과 재료 선택 이야기",
         headline: "작업실에서 바로 듣는 제작 비하인드",
@@ -147,6 +150,8 @@ const workDetails = [
 
 const playIconPath = "M7 5.2v13.6c0 .73.8 1.18 1.43.8L19.98 13a.92.92 0 0 0 0-1.6L8.43 4.4A.92.92 0 0 0 7 5.2Z";
 const pauseIconPath = "M6.5 3A1.5 1.5 0 005 4.5v15A1.5 1.5 0 006.5 21h2a1.5 1.5 0 001.5-1.5v-15A1.5 1.5 0 008.5 3h-2Zm9 0A1.5 1.5 0 0014 4.5v15a1.5 1.5 0 001.5 1.5h2a1.5 1.5 0 001.5-1.5v-15A1.5 1.5 0 0017.5 3h-2Z";
+const bookmarkOutlinePath = "M19 2H5a2 2 0 00-2 2v16.887c0 1.266 1.382 2.048 2.469 1.399L12 18.366l6.531 3.919c1.087.652 2.469-.131 2.469-1.397V4a2 2 0 00-2-2ZM5 20.233V4h14v16.233l-6.485-3.89-.515-.309-.515.309L5 20.233Z";
+const bookmarkFilledPath = "M5 2a2 2 0 0 0-2 2v16.887c0 1.266 1.382 2.048 2.469 1.399L12 18.366l6.531 3.919c1.087.652 2.469-.131 2.469-1.397V4a2 2 0 0 0-2-2H5Z";
 const tradeIconPath = "M21.5 4h-19A1.5 1.5 0 001 5.5v13A1.5 1.5 0 002.5 20h19a1.5 1.5 0 001.5-1.5v-13A1.5 1.5 0 0021.5 4ZM3 18V6h18v12H3Zm9-11.5a1 1 0 00-1 1v.638c-.357.101-.689.26-.979.49A2.35 2.35 0 009.13 10.5c-.007.424.112.84.342 1.197.21.31.497.563.831.734.546.29 1.23.411 1.693.502.557.109.899.19 1.117.315.087.048.11.082.114.09.004.005.028.044.028.162 0 .024-.008.118-.165.235-.162.122-.5.27-1.09.27-.721 0-1.049-.21-1.181-.323a.7.7 0 01-.132-.15l-.01-.018.005.013.006.014.002.009a.996.996 0 00-1.884.64l.947-.316-.003.001c-.9.3-.942.315-.943.317l.001.003.003.006.004.015.012.032c.045.111.1.218.162.321.146.236.324.444.535.624.357.306.841.566 1.476.702v.605a1 1 0 002 0v-.614c1.29-.289 2.245-1.144 2.245-2.386 0-.44-.103-.852-.327-1.212-.22-.355-.52-.6-.82-.77-.555-.316-1.244-.445-1.719-.539-.568-.111-.915-.185-1.143-.305a.5.5 0 01-.1-.07l-.004-.002V10.6a.401.401 0 01-.012-.1c0-.158.053-.244.14-.314.109-.086.34-.19.74-.19.373-.001.73.144.997.404a.995.995 0 001.518-1.286l-.699.58.698-.582v-.001l-.002-.001-.002-.003-.006-.006-.016-.018a2.984 2.984 0 00-.178-.182A3.44 3.44 0 0013 8.154V7.5a1 1 0 00-1-1Z";
 const auctionIconPath = "M4.222 4.223a11 11 0 000 15.555 1 1 0 101.414-1.414 9 9 0 010-12.727 1 1 0 10-1.414-1.414Zm13.79.353a1 1 0 000 1.414 8.5 8.5 0 010 12.022 1 1 0 001.413 1.414 10.501 10.501 0 000-14.85 1 1 0 00-1.413 0Zm-2.83 2.827a1 1 0 000 1.414 4.501 4.501 0 010 6.365 1.001 1.001 0 001.414 1.414 6.5 6.5 0 000-9.193 1 1 0 00-1.415 0Zm-7.78 0a6.5 6.5 0 000 9.194 1 1 0 001.415-1.415 4.5 4.5 0 010-6.364 1.001 1.001 0 00-1.415-1.415ZM12 10a2 2 0 100 4 2 2 0 000-4Z";
 
@@ -154,6 +159,50 @@ const pageStack = document.getElementById("page-stack");
 const workPageTemplate = document.getElementById("work-page-template");
 const navigationButtonUp = document.getElementById("navigation-button-up");
 const navigationButtonDown = document.getElementById("navigation-button-down");
+
+function getFullscreenElement() {
+    return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement || null;
+}
+
+async function requestElementFullscreen(element) {
+    if (element.requestFullscreen) {
+        return element.requestFullscreen();
+    }
+
+    if (element.webkitRequestFullscreen) {
+        return element.webkitRequestFullscreen();
+    }
+
+    if (element.msRequestFullscreen) {
+        return element.msRequestFullscreen();
+    }
+
+    throw new Error("Fullscreen API unavailable");
+}
+
+async function exitAnyFullscreen() {
+    if (document.exitFullscreen) {
+        return document.exitFullscreen();
+    }
+
+    if (document.webkitExitFullscreen) {
+        return document.webkitExitFullscreen();
+    }
+
+    if (document.msExitFullscreen) {
+        return document.msExitFullscreen();
+    }
+
+    throw new Error("Fullscreen exit unavailable");
+}
+
+function supportsFullscreenApi(element) {
+    return Boolean(
+        element?.requestFullscreen ||
+        element?.webkitRequestFullscreen ||
+        element?.msRequestFullscreen
+    );
+}
 
 function bindPageData(page, data) {
     Object.entries(data).forEach(([key, value]) => {
@@ -398,12 +447,16 @@ function bindPageInteractions(page, data) {
     const primaryLikeButton = page.querySelector('[data-role="primary-like-button"]');
     const primaryDislikeButton = page.querySelector('[data-role="primary-dislike-button"]');
     const primaryLikeCount = primaryLikeButton?.querySelector('[data-field="likeCount"]');
+    const bookmarkButton = page.querySelector('[data-role="bookmark-button"]');
+    const bookmarkIconPath = bookmarkButton?.querySelector('[data-role="bookmark-icon-path"]');
     const shareButton = page.querySelector('[data-role="share-button"]');
     const playToggle = page.querySelector('[data-role="play-toggle"]');
     const playTogglePath = page.querySelector('[data-role="play-toggle-path"]');
     const thumbVideo = page.querySelector('[data-role="thumb-video"]');
     const moreButton = page.querySelector('[data-role="more-button"]');
     const moreMenu = page.querySelector('[data-role="more-menu"]');
+    const editButton = page.querySelector('[data-role="edit-button"]');
+    const deleteButton = page.querySelector('[data-role="delete-button"]');
     const notRecommendButton = page.querySelector('[data-role="not-recommend-button"]');
     const reportButton = page.querySelector('[data-role="report-button"]');
     const descriptionButton = page.querySelector('[data-role="description-button"]');
@@ -441,8 +494,17 @@ function bindPageInteractions(page, data) {
     const card = page.querySelector(".card");
     const fullscreenButton = page.querySelector('[data-role="fullscreen-button"]');
     const mediaCluster = page.querySelector(".media-cluster");
-    const workdetailStage = page.closest(".workdetail-stage");
+    const workdetailStage = pageStack?.closest(".workdetail-stage") || document.querySelector(".workdetail-stage");
     let snackbarTimerId = 0;
+    const isOwner = Boolean(data.isOwner);
+
+    if (editButton) {
+        editButton.hidden = !isOwner;
+    }
+
+    if (deleteButton) {
+        deleteButton.hidden = !isOwner;
+    }
 
     if (playToggle && playTogglePath) {
         let isPaused = false;
@@ -529,6 +591,25 @@ function bindPageInteractions(page, data) {
         initialCount: parseDisplayCount(data.likeCount),
         compactCount: true
     });
+
+    if (bookmarkButton) {
+        const syncBookmarkState = (isActive) => {
+            bookmarkButton.setAttribute("aria-pressed", isActive ? "true" : "false");
+            bookmarkButton.classList.toggle("is-active", isActive);
+            bookmarkButton.setAttribute("aria-label", isActive ? "찜 해제" : "찜하기");
+
+            if (bookmarkIconPath) {
+                bookmarkIconPath.setAttribute("d", isActive ? bookmarkFilledPath : bookmarkOutlinePath);
+            }
+        };
+
+        syncBookmarkState(false);
+
+        bookmarkButton.addEventListener("click", () => {
+            const nextState = bookmarkButton.getAttribute("aria-pressed") !== "true";
+            syncBookmarkState(nextState);
+        });
+    }
 
     if (pivotGalleryCover) {
         pivotGalleryCover.src = data.pivotThumb || "";
@@ -912,26 +993,13 @@ function bindPageInteractions(page, data) {
     }
 
     if (fullscreenButton && workdetailStage) {
+        const fullscreenTarget = workdetailStage;
+        let fallbackFullscreenActive = false;
         const closeTransientUi = () => {
             workdetailStage.querySelectorAll(".page").forEach((targetPage) => {
-                targetPage.classList.remove("panel-open");
-                targetPage.classList.remove("panel-comments");
-
-                const targetAnchoredPanel = targetPage.querySelector('[data-role="anchored-panel"]');
-                const targetCommentsPanel = targetPage.querySelector('[data-role="comments-panel"]');
-                const targetPivotPanel = targetPage.querySelector('[data-role="pivot-panel"]');
                 const targetMoreMenu = targetPage.querySelector('[data-role="more-menu"]');
                 const targetMoreButton = targetPage.querySelector('[data-role="more-button"]');
 
-                if (targetAnchoredPanel) {
-                    targetAnchoredPanel.hidden = true;
-                }
-                if (targetCommentsPanel) {
-                    targetCommentsPanel.hidden = true;
-                }
-                if (targetPivotPanel) {
-                    targetPivotPanel.hidden = true;
-                }
                 if (targetMoreMenu) {
                     targetMoreMenu.hidden = true;
                 }
@@ -942,20 +1010,93 @@ function bindPageInteractions(page, data) {
         };
 
         const updateFullscreenState = () => {
-            const isFullscreen = workdetailStage.classList.contains("stage-fullscreen");
+            const activeFullscreenElement = getFullscreenElement();
+            const isFullscreen = activeFullscreenElement === fullscreenTarget || fallbackFullscreenActive;
+            workdetailStage.classList.toggle("stage-fullscreen", isFullscreen);
+            document.body.classList.toggle("workdetail-is-fullscreen", isFullscreen);
+            if (isFullscreen) {
+                const activePage = getFullscreenActivePage();
+                if (!activePage) {
+                    syncFullscreenActivePage();
+                }
+                requestAnimationFrame(() => {
+                    alignFullscreenScrollToActivePage();
+                    requestAnimationFrame(() => {
+                        alignFullscreenScrollToActivePage();
+                    });
+                });
+            } else {
+                workdetailStage.querySelectorAll(".page").forEach((targetPage) => {
+                    targetPage.classList.remove("fullscreen-active-page");
+                });
+            }
             workdetailStage.querySelectorAll('[data-role="fullscreen-button"]').forEach((button) => {
                 button.setAttribute("aria-label", isFullscreen ? "전체 화면 종료" : "전체 화면");
+                button.setAttribute("aria-pressed", isFullscreen ? "true" : "false");
             });
         };
 
-        fullscreenButton.addEventListener("click", () => {
-            const willOpen = !workdetailStage.classList.contains("stage-fullscreen");
+        fullscreenButton.addEventListener("click", async () => {
+            const willOpen = !(getFullscreenElement() === fullscreenTarget || fallbackFullscreenActive);
             closeTransientUi();
-            workdetailStage.classList.toggle("stage-fullscreen", willOpen);
+            if (willOpen) {
+                page.scrollIntoView({ behavior: "auto", block: "start" });
+                setFullscreenActivePage(page);
+            }
+
+            try {
+                if (willOpen && supportsFullscreenApi(fullscreenTarget)) {
+                    fallbackFullscreenActive = false;
+                    await requestElementFullscreen(fullscreenTarget);
+                } else if (!willOpen && getFullscreenElement()) {
+                    fallbackFullscreenActive = false;
+                    await exitAnyFullscreen();
+                } else {
+                    fallbackFullscreenActive = willOpen;
+                }
+            } catch (_) {
+                fallbackFullscreenActive = willOpen;
+            }
+
             updateFullscreenState();
         });
 
+        document.addEventListener("fullscreenchange", updateFullscreenState);
+        document.addEventListener("webkitfullscreenchange", updateFullscreenState);
+        document.addEventListener("msfullscreenchange", updateFullscreenState);
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && !getFullscreenElement() && fallbackFullscreenActive) {
+                fallbackFullscreenActive = false;
+                updateFullscreenState();
+            }
+        });
         updateFullscreenState();
+    }
+
+    if (editButton) {
+        editButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            if (moreMenu && moreButton) {
+                moreMenu.hidden = true;
+                moreButton.setAttribute("aria-expanded", "false");
+            }
+            window.alert("수정 페이지 연결이 필요합니다.");
+        });
+    }
+
+    if (deleteButton) {
+        deleteButton.addEventListener("click", (event) => {
+            event.stopPropagation();
+            if (moreMenu && moreButton) {
+                moreMenu.hidden = true;
+                moreButton.setAttribute("aria-expanded", "false");
+            }
+
+            const confirmed = window.confirm("이 작품을 삭제하시겠습니까?");
+            if (confirmed) {
+                window.alert("삭제 API 연결이 필요합니다.");
+            }
+        });
     }
 }
 
@@ -995,6 +1136,51 @@ function scrollToPage(index) {
     if (targetPage) {
         targetPage.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+}
+
+function syncFullscreenActivePage() {
+    if (!pageStack) {
+        return;
+    }
+
+    const currentIndex = getCurrentPageIndex();
+    const pages = Array.from(pageStack.querySelectorAll(".page"));
+
+    pages.forEach((page, index) => {
+        page.classList.toggle("fullscreen-active-page", index === currentIndex);
+    });
+}
+
+function setFullscreenActivePage(targetPage) {
+    if (!pageStack) {
+        return;
+    }
+
+    const pages = Array.from(pageStack.querySelectorAll(".page"));
+    pages.forEach((page) => {
+        page.classList.toggle("fullscreen-active-page", page === targetPage);
+    });
+}
+
+function getFullscreenActivePage() {
+    if (!pageStack) {
+        return null;
+    }
+
+    return pageStack.querySelector(".page.fullscreen-active-page");
+}
+
+function alignFullscreenScrollToActivePage() {
+    if (!pageStack) {
+        return;
+    }
+
+    const activePage = getFullscreenActivePage();
+    if (!activePage) {
+        return;
+    }
+
+    pageStack.scrollTop = activePage.offsetTop;
 }
 
 function updateNavigationState() {
@@ -1079,9 +1265,13 @@ if (pageStack && workPageTemplate) {
         pageStack.addEventListener("scroll", () => {
             updateNavigationState();
             resetInactivePages();
+            if (document.querySelector(".workdetail-stage")?.classList.contains("stage-fullscreen")) {
+                syncFullscreenActivePage();
+            }
         }, { passive: true });
         window.addEventListener("resize", updateNavigationState);
         resetInactivePages();
         updateNavigationState();
+        syncFullscreenActivePage();
     }
 }

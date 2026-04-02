@@ -19,6 +19,7 @@ body {
     color: #111111;
     font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
     overflow: hidden;
+    overflow-x: hidden;
 }
 
 .yt-shell__page-content.workdetail-shell {
@@ -27,6 +28,7 @@ body {
     margin-top: 56px;
     margin-left: 240px;
     background: #ffffff;
+    overflow-x: hidden;
 }
 
 .workdetail-stage {
@@ -46,6 +48,7 @@ svg {
 .page-stack {
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
 }
@@ -169,7 +172,17 @@ svg {
 
 .thumb-control-button-bookmark {
     background: transparent;
-    backdrop-filter: none;
+    backdrop-filter: blur(6px);
+}
+
+.thumb-control-button-bookmark.is-active {
+    background: transparent;
+    border-color: rgba(255, 255, 255, 0.92);
+    color: #ffffff;
+}
+
+.thumb-control-button-bookmark.is-active svg {
+    fill: currentColor;
 }
 
 .thumb::after {
@@ -208,6 +221,14 @@ svg {
 
 .thumb-more-menu-item:hover {
     background: #f2f2f2;
+}
+
+.thumb-more-menu-item-danger {
+    color: #b3261e;
+}
+
+.thumb-more-menu-item-danger:hover {
+    background: #fff1f0;
 }
 
 .thumb-more-menu-icon {
@@ -675,7 +696,6 @@ svg {
 
 .report-modal-reasons {
     display: grid;
-    gap: 10px;
 }
 
 .report-modal-reason {
@@ -1439,10 +1459,28 @@ svg {
     visibility: visible;
 }
 
+.workdetail-stage.stage-fullscreen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    width: 100%;
+    height: 100vh;
+    background: #000000;
+    overflow: hidden;
+}
+
+.workdetail-stage.stage-fullscreen .page-stack {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
 .workdetail-stage.stage-fullscreen .page {
     position: relative;
-    display: block;
-    width: 100vw;
+    width: 100%;
+    max-width: 100%;
     height: 100vh;
     min-height: 100vh;
     padding: 0;
@@ -1450,7 +1488,17 @@ svg {
     overflow: hidden;
 }
 
-.workdetail-stage.stage-fullscreen .view {
+.workdetail-stage.stage-fullscreen .page:not(.fullscreen-active-page) .view,
+.workdetail-stage.stage-fullscreen .page:not(.fullscreen-active-page) .info,
+.workdetail-stage.stage-fullscreen .page:not(.fullscreen-active-page) .actions,
+.workdetail-stage.stage-fullscreen .page:not(.fullscreen-active-page) .anchored-panel,
+.workdetail-stage.stage-fullscreen .page:not(.fullscreen-active-page) .comments-panel,
+.workdetail-stage.stage-fullscreen .page:not(.fullscreen-active-page) .pivot-panel {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .view {
     position: relative;
     display: block;
     width: 100%;
@@ -1459,10 +1507,10 @@ svg {
     margin: 0;
 }
 
-.workdetail-stage.stage-fullscreen .media-cluster {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .media-cluster {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 54%;
     display: grid;
     grid-template-columns: auto 72px;
     align-items: end;
@@ -1470,29 +1518,29 @@ svg {
     transform: translate(-50%, -50%);
 }
 
-.workdetail-stage.stage-fullscreen .media {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .media {
     width: auto;
 }
 
-.workdetail-stage.stage-fullscreen .card {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .card {
     width: auto;
     border-radius: 12px;
     overflow: hidden;
 }
 
-.workdetail-stage.stage-fullscreen .thumb {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .thumb {
     height: min(92vh, 940px);
     aspect-ratio: var(--player-ratio-w) / var(--player-ratio-h);
     border-radius: 12px;
 }
 
-.workdetail-stage.stage-fullscreen .thumb-controls {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .thumb-controls {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
 }
 
-.workdetail-stage.stage-fullscreen .info {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .info {
     position: absolute;
     left: 24px;
     bottom: 24px;
@@ -1503,26 +1551,20 @@ svg {
     pointer-events: auto;
 }
 
-.workdetail-stage.stage-fullscreen .channel-box {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .channel-box {
     order: 2;
 }
 
-.workdetail-stage.stage-fullscreen .left-meta {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .left-meta {
     order: 3;
 }
 
-.workdetail-stage.stage-fullscreen .actions {
+.workdetail-stage.stage-fullscreen .page.fullscreen-active-page .actions {
     align-self: end;
 }
 
-.workdetail-stage.stage-fullscreen .anchored-panel,
-.workdetail-stage.stage-fullscreen .comments-panel,
-.workdetail-stage.stage-fullscreen .pivot-panel {
-    display: none !important;
-}
-
 .workdetail-stage.stage-fullscreen .shorts-navigation {
-    display: none;
+    display: flex;
 }
 
 .workdetail-stage.stage-fullscreen .thumb-controls,
