@@ -1,5 +1,6 @@
 /* 토큰 영역 */
 :root {
+  /* 공통 */
   --color-primary: #6800ea;
   --color-primary-hover: #5300bb;
   --color-primary-light: #f3e8ff;
@@ -50,4 +51,26 @@
   --z-dropdown: 40;
   --z-modal: 80;
   --z-toast: 120;
+
+  /* 레이아웃 변수 (layout.html 기준) */
+  --layout-header-height: 56px;
+  --layout-guide-width: 240px;
+  --layout-guide-collapsed-width: 72px;
+
+  /* 콘텐츠 영역 */
+  --content-top: var(--layout-header-height);
+  --content-left: var(--layout-guide-width);
+  --content-width: calc(100vw - var(--layout-guide-width));
+  --content-padding: 24px;
+
+  /* 다크 테마 색상 */
+  --dark-bg-primary: #0f0f0f;
+  --dark-bg-secondary: #272727;
+  --dark-bg-hover: rgba(255, 255, 255, 0.1);
+  --dark-border-color: #3a3a3a;
+  --dark-text-primary: #f1f1f1;
+  --dark-text-secondary: #aaaaaa;
+  --dark-text-muted: #717171;
+  --dark-accent-blue: #3ea6ff;
+
 }
