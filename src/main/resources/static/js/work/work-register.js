@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var uploadPanel = document.getElementById("drop-zone");
     var fileInput = document.getElementById("video-file-input");
     var selectFileButton = document.getElementById("select-file-button");
+    var uploadAiButton = document.getElementById("upload-ai-button");
     var closeButton = document.getElementById("close-modal-button");
     var uploadCloseButton = document.getElementById("upload-close-button");
     var detailsCloseButton = document.getElementById("details-close-button");
@@ -40,7 +41,25 @@ document.addEventListener("DOMContentLoaded", function () {
     var playlistDropdownText = document.getElementById("playlist-dropdown-text");
     var playlistOptions = document.querySelectorAll(".playlist-option");
     var thumbnailUploadButtons = document.querySelectorAll(".thumbnail-upload-button");
+    var aiPromptModal = document.getElementById("ai-prompt-modal");
+    var aiPromptCloseButton = document.getElementById("ai-prompt-close-button");
+    var aiPromptInput = document.getElementById("ai-prompt-input");
+    var aiPromptBubble = document.getElementById("ai-prompt-bubble");
+    var aiPromptSendButton = document.getElementById("ai-prompt-send-button");
+    var aiPromptToolButton = document.getElementById("ai-prompt-tool-button");
+    var aiPromptComposeMenu = document.getElementById("ai-prompt-compose-menu");
+    var aiPromptAttachButton = document.getElementById("ai-prompt-attach-button");
+    var aiPromptFileInput = document.getElementById("ai-prompt-file-input");
+    var aiPromptAttachments = document.getElementById("ai-prompt-attachments");
+    var aiPromptImageAttachment = document.getElementById("ai-prompt-image-attachment");
+    var aiPromptImagePreview = document.getElementById("ai-prompt-image-preview");
+    var aiPromptRemoveAttachment = document.getElementById("ai-prompt-remove-attachment");
+    var aiPromptFileAttachment = document.getElementById("ai-prompt-file-attachment");
+    var aiPromptFileName = document.getElementById("ai-prompt-file-name");
+    var aiPromptRemoveFileAttachment = document.getElementById("ai-prompt-remove-file-attachment");
+    var aiPromptCloseTargets = document.querySelectorAll('[data-role="ai-prompt-close"]');
     var currentPreviewUrl = "";
+    var currentAiPromptAttachmentUrl = "";
 
     if (!modal || !dialogContent || !uploadScreen || !detailsScreen || !uploadPanel || !fileInput || !selectFileButton || !closeButton || !fileNameText) {
         return;
@@ -48,6 +67,122 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function closeModal() {
         modal.style.display = "none";
+    }
+
+    function openAiPromptModal() {
+        if (!aiPromptModal) {
+            return;
+        }
+
+        aiPromptModal.hidden = false;
+
+        if (aiPromptInput) {
+            aiPromptInput.focus();
+        }
+    }
+
+    function closeAiPromptModal() {
+        if (!aiPromptModal) {
+            return;
+        }
+
+        aiPromptModal.hidden = true;
+        closeAiPromptComposeMenu();
+    }
+
+    function closeAiPromptComposeMenu() {
+        if (!aiPromptComposeMenu || !aiPromptToolButton) {
+            return;
+        }
+
+        aiPromptComposeMenu.hidden = true;
+        aiPromptToolButton.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleAiPromptComposeMenu() {
+        var willOpen;
+
+        if (!aiPromptComposeMenu || !aiPromptToolButton) {
+            return;
+        }
+
+        willOpen = aiPromptComposeMenu.hidden;
+        aiPromptComposeMenu.hidden = !willOpen;
+        aiPromptToolButton.setAttribute("aria-expanded", willOpen ? "true" : "false");
+    }
+
+    function clearAiPromptAttachment() {
+        if (currentAiPromptAttachmentUrl) {
+            URL.revokeObjectURL(currentAiPromptAttachmentUrl);
+            currentAiPromptAttachmentUrl = "";
+        }
+
+        if (aiPromptFileInput) {
+            aiPromptFileInput.value = "";
+        }
+
+        if (aiPromptImagePreview) {
+            aiPromptImagePreview.removeAttribute("src");
+        }
+
+        if (aiPromptFileName) {
+            aiPromptFileName.textContent = "";
+        }
+
+        if (aiPromptImageAttachment) {
+            aiPromptImageAttachment.hidden = true;
+        }
+
+        if (aiPromptFileAttachment) {
+            aiPromptFileAttachment.hidden = true;
+        }
+
+        if (aiPromptAttachments) {
+            aiPromptAttachments.hidden = true;
+        }
+    }
+
+    function renderAiPromptAttachment(file) {
+        if (!file || !aiPromptAttachments || !aiPromptImageAttachment || !aiPromptFileAttachment) {
+            return;
+        }
+
+        clearAiPromptAttachment();
+        aiPromptAttachments.hidden = false;
+
+        if (file.type && file.type.indexOf("image/") === 0) {
+            currentAiPromptAttachmentUrl = URL.createObjectURL(file);
+
+            if (aiPromptImagePreview) {
+                aiPromptImagePreview.src = currentAiPromptAttachmentUrl;
+            }
+
+            aiPromptImageAttachment.hidden = false;
+            return;
+        }
+
+        if (aiPromptFileName) {
+            aiPromptFileName.textContent = file.name;
+        }
+
+        aiPromptFileAttachment.hidden = false;
+    }
+
+    function submitAiPrompt() {
+        var promptText;
+
+        if (!aiPromptInput || !aiPromptBubble) {
+            return;
+        }
+
+        promptText = aiPromptInput.value.trim();
+
+        if (!promptText) {
+            aiPromptInput.focus();
+            return;
+        }
+
+        aiPromptBubble.textContent = promptText;
     }
 
     function updateMediaPreview(file) {
@@ -268,6 +403,10 @@ document.addEventListener("DOMContentLoaded", function () {
         fileInput.click();
     });
 
+    if (uploadAiButton) {
+        uploadAiButton.addEventListener("click", openAiPromptModal);
+    }
+
     fileInput.addEventListener("change", function () {
         handleFiles(fileInput.files);
     });
@@ -298,6 +437,65 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (detailsCloseButton) {
         detailsCloseButton.addEventListener("click", closeModal);
+    }
+
+    aiPromptCloseTargets.forEach(function (target) {
+        target.addEventListener("click", closeAiPromptModal);
+    });
+
+    if (aiPromptCloseButton) {
+        aiPromptCloseButton.addEventListener("click", closeAiPromptModal);
+    }
+
+    if (aiPromptSendButton) {
+        aiPromptSendButton.addEventListener("click", submitAiPrompt);
+    }
+
+    if (aiPromptToolButton) {
+        aiPromptToolButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+            toggleAiPromptComposeMenu();
+        });
+    }
+
+    if (aiPromptAttachButton && aiPromptFileInput) {
+        aiPromptAttachButton.addEventListener("click", function () {
+            closeAiPromptComposeMenu();
+            aiPromptFileInput.click();
+        });
+    }
+
+    if (aiPromptComposeMenu) {
+        aiPromptComposeMenu.addEventListener("click", function (event) {
+            event.stopPropagation();
+        });
+    }
+
+    if (aiPromptFileInput) {
+        aiPromptFileInput.addEventListener("change", function () {
+            if (!aiPromptFileInput.files || !aiPromptFileInput.files[0]) {
+                return;
+            }
+
+            renderAiPromptAttachment(aiPromptFileInput.files[0]);
+        });
+    }
+
+    if (aiPromptRemoveAttachment) {
+        aiPromptRemoveAttachment.addEventListener("click", clearAiPromptAttachment);
+    }
+
+    if (aiPromptRemoveFileAttachment) {
+        aiPromptRemoveFileAttachment.addEventListener("click", clearAiPromptAttachment);
+    }
+
+    if (aiPromptInput) {
+        aiPromptInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                submitAiPrompt();
+            }
+        });
     }
 
     thumbnailUploadButtons.forEach(function (button) {
@@ -465,6 +663,22 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && aiPromptModal && !aiPromptModal.hidden) {
+            closeAiPromptModal();
+        }
+    });
+
+    document.addEventListener("click", function (event) {
+        if (!aiPromptComposeMenu || !aiPromptToolButton || aiPromptComposeMenu.hidden) {
+            return;
+        }
+
+        if (!aiPromptComposeMenu.contains(event.target) && !aiPromptToolButton.contains(event.target)) {
+            closeAiPromptComposeMenu();
+        }
+    });
 
     bindFieldCountVisibility(videoTitleInput);
     bindFieldCountVisibility(videoDescriptionInput);

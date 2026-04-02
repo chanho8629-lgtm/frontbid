@@ -50,7 +50,10 @@
                         <p class="upload-subtitle">콘텐츠를 게시하기 전에는 비공개로 설정됩니다.</p>
 
                         <input type="file" id="video-file-input" accept="video/*,image/*" hidden>
-                        <button type="button" class="select-file-button" id="select-file-button">파일 선택</button>
+                        <div class="upload-action-row">
+                            <button type="button" class="select-file-button" id="select-file-button">파일 선택</button>
+                            <button type="button" class="upload-ai-button" id="upload-ai-button">AI 생성하기</button>
+                        </div>
                         <p class="selected-file-name" id="selected-file-name" hidden></p>
                     </div>
                 </div>
@@ -295,6 +298,119 @@
                         <button type="button" class="tonal-button">뒤로</button>
                         <button type="button" class="filled-button">다음</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ai-prompt-modal" id="ai-prompt-modal" hidden>
+    <div class="ai-prompt-modal__backdrop" data-role="ai-prompt-close"></div>
+    <div class="ai-prompt-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="ai-prompt-title">
+        <div class="ai-prompt-modal__header">
+            <div class="ai-prompt-modal__title" id="ai-prompt-title">AI 생성</div>
+            <button type="button" class="ai-prompt-modal__close" id="ai-prompt-close-button" aria-label="닫기">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M17.293 5.293 12 10.586 6.707 5.293a1 1 0 1 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 0 0-1.414-1.414Z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="ai-prompt-modal__divider"></div>
+        <div class="ai-prompt-modal__body">
+            <div class="ai-prompt-thread">
+                <div class="ai-prompt-thread__bubble" id="ai-prompt-bubble">동영상 아무거나 하나 만들어줘 사진도</div>
+                <div class="ai-prompt-thread__result">
+                    <div class="ai-prompt-thread__label">이미지 생성됨 · 해질 무렵 산 정상의 여인</div>
+                    <div class="ai-prompt-preview-card">
+                        <div class="ai-prompt-preview-card__split">
+                            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="AI 생성 이미지 예시">
+                        </div>
+                        <div class="ai-prompt-preview-card__split">
+                            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="AI 생성 동영상 예시">
+                            <span class="ai-prompt-preview-card__play" aria-hidden="true">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M8 5.14v13.72c0 .72.78 1.17 1.4.8l10.77-6.86a.94.94 0 0 0 0-1.6L9.4 4.34A.94.94 0 0 0 8 5.14Z"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ai-prompt-preview-actions" aria-label="생성 결과 작업">
+                        <button type="button" class="ai-prompt-preview-actions__button" aria-label="복사">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M19 1H9a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2ZM9 17V3h10v14H9Zm-4 4V5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2H5Z"/>
+                            </svg>
+                        </button>
+                        <button type="button" class="ai-prompt-preview-actions__button" aria-label="다운로드">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 3a1 1 0 0 1 1 1v9.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L11 13.586V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="ai-prompt-thread__message ai-prompt-thread__message--user">
+                    방금 만든 결과에서 원하는 분위기나 색감이 있으면 이어서 수정할 수 있어요.
+                </div>
+            </div>
+            <div class="ai-prompt-compose-wrap">
+                <div class="ai-prompt-compose-menu" id="ai-prompt-compose-menu" hidden>
+                    <button type="button" class="ai-prompt-compose-menu__item" id="ai-prompt-attach-button">
+                        <span class="ai-prompt-compose-menu__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+                                <path d="M16.5 6.5v8.75a4.25 4.25 0 1 1-8.5 0V5.75a2.75 2.75 0 1 1 5.5 0V14a1.25 1.25 0 1 1-2.5 0V7.5a1 1 0 1 0-2 0V14a3.25 3.25 0 1 0 6.5 0V5.75a4.75 4.75 0 1 0-9.5 0v9.5a6.25 6.25 0 1 0 12.5 0V6.5a1 1 0 1 0-2 0Z"/>
+                            </svg>
+                        </span>
+                        <span>사진 및 파일 추가</span>
+                    </button>
+                    <button type="button" class="ai-prompt-compose-menu__item">
+                        <span class="ai-prompt-compose-menu__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
+                                <path d="M9 4a2 2 0 0 0-2 2v1H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H9Zm0 2h9v7h-1V9a2 2 0 0 0-2-2H9V6Zm-3 3h9v7H6V9Zm2 1.25A1.75 1.75 0 1 0 8 13.75a1.75 1.75 0 0 0 0-3.5Zm6 4.75H7.5l2.1-2.52a1 1 0 0 1 1.54-.02l1.2 1.34.88-1.02A1 1 0 0 1 14 13.46V15Z"/>
+                            </svg>
+                        </span>
+                        <span>이미지 만들기</span>
+                    </button>
+                </div>
+                <input type="file" id="ai-prompt-file-input" accept="image/*,*" hidden>
+                <div class="ai-prompt-compose">
+                <div class="ai-prompt-compose__attachments" id="ai-prompt-attachments" hidden>
+                    <div class="ai-prompt-attachment ai-prompt-attachment--image" id="ai-prompt-image-attachment" hidden>
+                        <img id="ai-prompt-image-preview" alt="첨부 이미지 미리보기">
+                        <button type="button" class="ai-prompt-attachment__remove" id="ai-prompt-remove-attachment" aria-label="첨부 삭제">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M17.293 5.293 12 10.586 6.707 5.293a1 1 0 1 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 0 0-1.414-1.414Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="ai-prompt-attachment ai-prompt-attachment--file" id="ai-prompt-file-attachment" hidden>
+                        <span class="ai-prompt-attachment__file-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M7 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.828a2 2 0 0 0-.586-1.414l-3.828-3.828A2 2 0 0 0 13.172 3H7Zm0 2h6v4a2 2 0 0 0 2 2h4v10H7V4Zm8 .414L18.586 8H15V4.414Z"/>
+                            </svg>
+                        </span>
+                        <span class="ai-prompt-attachment__file-name" id="ai-prompt-file-name"></span>
+                        <button type="button" class="ai-prompt-attachment__remove" id="ai-prompt-remove-file-attachment" aria-label="첨부 삭제">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M17.293 5.293 12 10.586 6.707 5.293a1 1 0 1 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 1 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 0 0-1.414-1.414Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="button" class="ai-prompt-compose__tool" id="ai-prompt-tool-button" aria-label="추가" aria-expanded="false">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M19 11H13V5a1 1 0 1 0-2 0v6H5a1 1 0 0 0 0 2h6v6a1 1 0 1 0 2 0v-6h6a1 1 0 1 0 0-2Z"/>
+                    </svg>
+                </button>
+                <input type="text" class="ai-prompt-compose__input" id="ai-prompt-input" placeholder="무엇이든 물어보세요" autocomplete="off">
+                <button type="button" class="ai-prompt-compose__icon-button" aria-label="마이크">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 15a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Zm5-3a1 1 0 1 1 2 0 7 7 0 0 1-6 6.93V21h3a1 1 0 1 1 0 2H8a1 1 0 0 1 0-2h3v-2.07A7 7 0 0 1 5 12a1 1 0 1 1 2 0 5 5 0 1 0 10 0Z"/>
+                    </svg>
+                </button>
+                <button type="button" class="ai-prompt-compose__send" id="ai-prompt-send-button" aria-label="전송">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M12 3a1 1 0 0 1 1 1v12.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                </button>
                 </div>
             </div>
         </div>

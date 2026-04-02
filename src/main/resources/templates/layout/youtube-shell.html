@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title th:text="${pageTitle} ?: 'Bideo'">Bideo</title>
+  <th:block th:fragment="ytShellHead(pageTitle)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle}">Bideo</title>
+    <link rel="stylesheet" href="../../static/css/layout/youtube-shell-overrides.css" th:href="@{/css/layout/youtube-shell-overrides.css}">
+    <link rel="stylesheet" href="../../static/css/common/font.css" th:href="@{/css/common/font.css}">
+  </th:block>
   <link rel="stylesheet" href="../../static/css/layout/youtube-shell-overrides.css">
   <link rel="stylesheet" href="../../static/css/common/font.css">
 </head>
 
 <body>
+  <div th:fragment="ytShellChrome(activeNav)">
   <div id="masthead-container" class="style-scope ytd-app">
     <ytd-masthead id="masthead" logo-type="YOUTUBE_PREMIUM_LOGO" slot="masthead" class="masthead-finish"
       frosted-glass-mode="without-chipbar" role="banner"
@@ -1731,6 +1739,8 @@
 
     </div>
   </tp-yt-app-drawer>
+  </div>
+  <th:block th:fragment="ytShellScripts()"></th:block>
 </body>
 
 </html>
