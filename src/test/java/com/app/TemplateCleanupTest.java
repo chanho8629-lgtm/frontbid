@@ -70,32 +70,61 @@ class TemplateCleanupTest {
     }
 
     @Test
-    void youtubeShellLayoutIsExtractedAndIntroMainConsumesLocalShellAssets() throws IOException {
+    void youtubeShellLayoutIsExtractedWithStandardTagsAndMainConsumesLocalShellAssets() throws IOException {
         String layoutTemplate = readResource("templates/layout/youtube-shell.html");
-        String introTemplate = readResource("templates/main/intro-main.html");
+        String previewTemplate = readResource("templates/layout/layout.html");
+        String mainTemplate = readResource("templates/main/main.html");
         String shellStyles = readResource("static/css/layout/youtube-shell-overrides.css");
         String shellScript = readResource("static/js/layout/youtube-shell-bridge.js");
+        String chatStyles = readResource("static/css/layout/chat-fab.css");
+        String chatScript = readResource("static/js/layout/chat-fab.js");
 
         assertTrue(layoutTemplate.contains("th:fragment=\"ytShellHead(pageTitle)\""));
         assertTrue(layoutTemplate.contains("th:fragment=\"ytShellChrome(activeItemKey)\""));
         assertTrue(layoutTemplate.contains("th:fragment=\"ytShellScripts()\""));
-        assertTrue(layoutTemplate.contains("../../static/vendor/youtube-shell/20260331/css/www-onepick.css"));
-        assertTrue(layoutTemplate.contains("../../static/vendor/youtube-shell/20260331/js/webcomponents-sd.js"));
+        assertTrue(layoutTemplate.contains("data-yt-shell-root"));
+        assertTrue(layoutTemplate.contains("data-yt-shell-menu-toggle"));
+        assertTrue(layoutTemplate.contains("data-yt-shell-overlay"));
+        assertTrue(layoutTemplate.contains("data-yt-shell-drawer"));
+        assertTrue(layoutTemplate.contains("data-yt-shell-mobile-search"));
         assertTrue(layoutTemplate.contains("../../static/css/layout/youtube-shell-overrides.css"));
+        assertTrue(layoutTemplate.contains("../../static/css/layout/chat-fab.css"));
+        assertTrue(layoutTemplate.contains("../../static/css/common/font.css"));
         assertTrue(layoutTemplate.contains("../../static/js/layout/youtube-shell-bridge.js"));
+        assertTrue(layoutTemplate.contains("../../static/js/layout/chat-fab.js"));
         assertTrue(layoutTemplate.contains("../../static/images/logo.png"));
-        assertFalse(layoutTemplate.contains("https://www.youtube.com/s/desktop/"));
-        assertFalse(layoutTemplate.contains("https://www.youtube.com/s/_/ytmainappweb/"));
+        assertTrue(layoutTemplate.contains("신고 기록"));
+        assertTrue(layoutTemplate.contains("YouTube Music"));
+        assertTrue(layoutTemplate.contains("YouTube Kids"));
+        assertTrue(layoutTemplate.contains("data-yt-chat-toggle"));
+        assertTrue(layoutTemplate.contains("data-yt-chat-layer"));
+        assertTrue(layoutTemplate.contains("data-yt-chat-panel"));
+        assertTrue(layoutTemplate.contains("data-yt-chat-room-list"));
 
-        assertTrue(introTemplate.contains("templates/layout/youtube-shell :: ytShellHead"));
-        assertTrue(introTemplate.contains("templates/layout/youtube-shell :: ytShellChrome"));
-        assertTrue(introTemplate.contains("templates/layout/youtube-shell :: ytShellScripts"));
-        assertTrue(introTemplate.contains("data-intro-main-root"));
+        assertTrue(previewTemplate.contains("templates/layout/youtube-shell :: ytShellHead"));
+        assertTrue(previewTemplate.contains("templates/layout/youtube-shell :: ytShellChrome"));
+        assertTrue(previewTemplate.contains("templates/layout/youtube-shell :: ytShellScripts"));
+        assertTrue(previewTemplate.contains("layout-preview"));
+
+        assertTrue(mainTemplate.contains("templates/layout/youtube-shell :: ytShellHead"));
+        assertTrue(mainTemplate.contains("templates/layout/youtube-shell :: ytShellChrome"));
+        assertTrue(mainTemplate.contains("templates/layout/youtube-shell :: ytShellScripts"));
+        assertTrue(mainTemplate.contains("data-main-root"));
+
+        assertNoCustomTags(layoutTemplate);
+        assertNoCustomTags(previewTemplate);
 
         assertTrue(shellStyles.contains(".yt-shell"));
+        assertTrue(shellStyles.contains(".yt-shell__header"));
         assertTrue(shellStyles.contains(".yt-shell__guide"));
+        assertTrue(shellStyles.contains(".yt-shell__page-content"));
         assertTrue(shellScript.contains("data-yt-shell-root"));
         assertTrue(shellScript.contains("data-yt-shell-menu-toggle"));
+        assertTrue(chatStyles.contains(".yt-chat-fab"));
+        assertTrue(chatStyles.contains(".yt-chat-panel"));
+        assertTrue(chatStyles.contains(".yt-chat-room"));
+        assertTrue(chatScript.contains("data-yt-chat-toggle"));
+        assertTrue(chatScript.contains("data-yt-chat-room-list"));
     }
 
     @Test
@@ -124,6 +153,30 @@ class TemplateCleanupTest {
         assertTrue(mainStyles.contains(".movies-shelf__track"));
         assertTrue(mainScript.contains("data-main-shelf"));
         assertTrue(mainScript.contains("data-main-chip"));
+    }
+
+    @Test
+    void layoutTemplateLoadsCommonFontOverridesThatDefineSharedFontVariables() throws IOException {
+        String layoutTemplate = readResource("templates/layout/layout.html");
+        String commonFontStyles = readResource("static/css/common/font.css");
+
+        assertTrue(layoutTemplate.contains("templates/layout/youtube-shell :: ytShellHead"));
+
+        assertTrue(commonFontStyles.contains("--common-font-family"));
+        assertTrue(commonFontStyles.contains("--font-family: var(--common-font-family)"));
+        assertTrue(commonFontStyles.contains("--display-font-family: var(--common-font-family)"));
+        assertTrue(commonFontStyles.contains("--ytd-user-comment-font-family: var(--common-font-family)"));
+        assertTrue(commonFontStyles.contains("--ytd-caption-font-family: var(--common-font-family)"));
+        assertTrue(commonFontStyles.contains("font-size: 16px"));
+        assertTrue(commonFontStyles.contains("font-size: inherit"));
+        assertTrue(commonFontStyles.contains("html,"));
+        assertTrue(commonFontStyles.contains("button,"));
+        assertTrue(commonFontStyles.contains("@import url(\"https://fonts.googleapis.com/css2?family=Roboto"));
+        assertTrue(commonFontStyles.contains("Noto+Sans+KR"));
+    }
+
+    private void assertNoCustomTags(String markup) {
+        assertFalse(markup.matches("(?is).*</?(?:ytd|yt|tp-yt|iron|paper|dom|badge-shape|custom-style|ps-dom-if|.*-view-model)[a-z0-9:_-]*\\b.*"));
     }
 
     private boolean resourceExists(String path) {
